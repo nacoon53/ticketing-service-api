@@ -10,6 +10,10 @@
 ## ERD
 [ERD 보러가기](https://github.com/nacoon53/ticketing-service-api/wiki/3.-ERD)
 
+## API 명세서
+[API 명세서 보러가기](https://github.com/nacoon53/ticketing-service-api/wiki/4.-API-%EB%AA%85%EC%84%B8%EC%84%9C)
+
+---
 # 프로젝트
 
 ## Getting Started
