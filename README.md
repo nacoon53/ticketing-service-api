@@ -7,7 +7,13 @@
 
 [시퀀스 다이어그램](https://github.com/nacoon53/ticketing-service-api/wiki/2.-%EC%8B%9C%ED%80%80%EC%8A%A4-%EB%8B%A4%EC%9D%B4%EC%96%B4%EA%B7%B8%EB%9E%A8)
 
+## ERD
+[ERD 보러가기](https://github.com/nacoon53/ticketing-service-api/wiki/3.-ERD)
 
+## API 명세서
+[API 명세서 보러가기](https://github.com/nacoon53/ticketing-service-api/wiki/4.-API-%EB%AA%85%EC%84%B8%EC%84%9C)
+
+---
 # 프로젝트
 
 ## Getting Started
