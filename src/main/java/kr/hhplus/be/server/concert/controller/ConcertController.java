@@ -1,5 +1,7 @@
 package kr.hhplus.be.server.concert.controller;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.concert.dto.AvailableSeatResponseDTO;
 import kr.hhplus.be.server.concert.dto.BookingRequestDTO;
 import kr.hhplus.be.server.concert.dto.ConcertResponseDTO;
@@ -10,10 +12,12 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
+@Tag(name="콘서트 API", description = "콘서트 관련 정보를 제공합니다.")
 @RequestMapping("/api/v1/concert")
 public class ConcertController {
 
     // 콘서트 목록 조회
+    @Operation(description = "콘서트 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<ConcertResponseDTO>> getConcertList() {
         ConcertResponseDTO concert1 = ConcertResponseDTO.builder()
@@ -31,6 +35,7 @@ public class ConcertController {
     }
 
     // 예약 가능 날짜 조회
+    @Operation(description = "콘서트의 예약 가능한 날짜를 조회합니다.")
     @GetMapping("/{concertId}/date")
     public ResponseEntity<List<String>> getAvailableDates(@PathVariable("concertId") long concertId,
                                                           @RequestParam("status") String status) {
@@ -43,6 +48,7 @@ public class ConcertController {
     }
 
     // 예약 가능 좌석 조회
+    @Operation(description = "선택한 콘서트와 날짜에 예약 가능한 좌석을 조회합니다.")
     @GetMapping("/{concertId}/{concertDate}/seat")
     public ResponseEntity<List<AvailableSeatResponseDTO>> getAvailableSeats(@PathVariable("concertId") long concertId,
                                                                             @PathVariable("concertDate") String concertDate,
@@ -66,7 +72,8 @@ public class ConcertController {
         return ResponseEntity.ok(List.of(seat1, seat2));
     }
 
-    // 좌석 예약
+    // 좌석 임시 배정
+    @Operation(description = "선택한 좌석에 대해 임시 배정 처리합니다.")
     @PostMapping("/booking")
     public ResponseEntity<String> bookSeat(@RequestBody BookingRequestDTO request) {
         int status = 200;
