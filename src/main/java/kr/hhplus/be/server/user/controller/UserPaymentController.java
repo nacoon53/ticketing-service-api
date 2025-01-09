@@ -1,15 +1,17 @@
 package kr.hhplus.be.server.user.controller;
 
-import kr.hhplus.be.server.user.dto.ChargeRequestDTO;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import kr.hhplus.be.server.user.dto.PaymentHistoryResponseDTO;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/api/v1/user/payment")
+@Tag(name="유저 결제 API", description = "유저의 결제 정보를 제공합니다.")
+@RequestMapping("/api/v1/users/payment")
 public class UserPaymentController {
 
     // 결제 내역 조회

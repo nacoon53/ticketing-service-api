@@ -5,6 +5,6 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class WaitlistTokenIssueResponseDTO {
+public class WaitListTokenIssueResponseDTO {
     private String token;
 }
