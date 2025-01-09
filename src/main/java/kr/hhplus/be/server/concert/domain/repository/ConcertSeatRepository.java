@@ -11,4 +11,5 @@ public interface ConcertSeatRepository {
     ConcertSeat save(ConcertSeat seat);
 
     List<ConcertSeat> findByConcertIdAndStatus(long concertId, SeatStatus seatStatus);
+    void clear();
 }

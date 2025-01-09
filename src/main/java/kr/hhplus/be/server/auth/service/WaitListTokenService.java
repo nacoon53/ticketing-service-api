@@ -4,10 +4,12 @@ import kr.hhplus.be.server.auth.domain.code.TokenStatus;
 import kr.hhplus.be.server.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.auth.domain.repository.WaitListTokenRepository;
 import lombok.RequiredArgsConstructor;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
 import java.util.List;
+import java.util.stream.IntStream;
 
 @RequiredArgsConstructor
 @Service
@@ -33,6 +35,7 @@ public class WaitListTokenService {
         WaitListToken waitListToken = WaitListToken.builder()
                 .userId(userId)
                 .token(token)
+                .status(TokenStatus.WAIT)
                 .build();
 
         return waitListTokenRepository.save(waitListToken);
@@ -51,7 +54,7 @@ public class WaitListTokenService {
     public WaitListToken getWaitListTokenByToken(String token) throws Exception {
         WaitListToken waitListToken = waitListTokenRepository.findByToken(token);
 
-        if(waitListToken == null) {
+        if(waitListToken == null || StringUtils.equals(waitListToken.getStatus().toString(), TokenStatus.EXPIRED.name())) {
             throw new Exception("토큰이 존재하지 않습니다. 새로 발급 받아 주세요.");
         }
 
@@ -62,7 +65,12 @@ public class WaitListTokenService {
         //상태값이 대기인 토큰들을 최종갱신시간으로 오름차순 정렬해서 나온 순서
         List<WaitListToken> waitListTokens = waitListTokenRepository.findByStatusOrderByLastIssuedAtAsc(TokenStatus.WAIT);
 
-        return waitListTokens.indexOf(targetToken)+1;
+        int index = IntStream.range(0, waitListTokens.size())
+                .filter(i -> waitListTokens.get(i).getToken().equals(targetToken.getToken()))
+                .findFirst()
+                .orElse(-2);
+
+        return index+1;
     }
 
     public WaitListToken changeStatusToExpired(String token) {

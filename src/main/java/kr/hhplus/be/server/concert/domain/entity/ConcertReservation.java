@@ -2,6 +2,7 @@ package kr.hhplus.be.server.concert.domain.entity;
 
 import jakarta.persistence.*;
 import kr.hhplus.be.server.concert.domain.code.ReservationStatus;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -9,7 +10,10 @@ import org.springframework.data.annotation.CreatedDate;
 
 import java.time.LocalDateTime;
 
+@AllArgsConstructor
 @NoArgsConstructor
+@Builder
+@Getter
 @Entity
 @Table
 public class ConcertReservation {
@@ -19,13 +23,10 @@ public class ConcertReservation {
 
     private long concertId;
 
-    @Getter
     private long seatId;
 
-    @Getter
     private String userId;
 
-    @Getter
     @Enumerated(EnumType.STRING)
     private ReservationStatus status;
 
