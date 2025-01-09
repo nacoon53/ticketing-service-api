@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Builder
 @Getter
-public class WaitlistTokenValidationResponseDTO {
+public class WaitListTokenValidationResponseDTO {
     private boolean isValid;
     private boolean canAccess;
-    private int waitNumber; // 대기 순서
+    private long waitNumber; // 대기 순서
 }

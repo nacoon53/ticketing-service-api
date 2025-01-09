@@ -9,4 +9,5 @@ public class ConcertResponseDTO {
     private long concertId;
     private String concertName;
     private String host;
+    private String showDate;
 }
