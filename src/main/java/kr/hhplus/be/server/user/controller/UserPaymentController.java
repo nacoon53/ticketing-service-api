@@ -11,7 +11,7 @@ import java.util.List;
 
 @RestController
 @Tag(name="유저 결제 API", description = "유저의 결제 정보를 제공합니다.")
-@RequestMapping("/api/v1/user/payment")
+@RequestMapping("/api/v1/users/payment")
 public class UserPaymentController {
 
     // 결제 내역 조회

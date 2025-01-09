@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @Tag(name="결제 API", description = "결제 기능을 처리합니다.")
-@RequestMapping("/api/v1/payment")
+@RequestMapping("/api/v1/payments")
 public class PaymentController {
 
     // 결제 기능

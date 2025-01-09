@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @Tag(name="유저의 예치금 API", description = "유저의 예치금과 관련된 정보를 제공합니다.")
-@RequestMapping("/api/v1/user/deposit")
+@RequestMapping("/api/v1/users/deposit")
 public class UserDepositController {
 
     // 예치금 충전
