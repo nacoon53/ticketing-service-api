@@ -13,4 +13,6 @@ public interface WaitListTokenRepository {
     WaitListToken findByToken(String token);
 
     List<WaitListToken> findByStatusOrderByLastIssuedAtAsc(TokenStatus tokenStatus);
+
+    void clear();
 }
