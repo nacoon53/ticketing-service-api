@@ -11,7 +11,9 @@
 
 [ERD](https://github.com/nacoon53/ticketing-service-api/wiki/3.-ERD)
 
-[API 명세서](https://github.com/nacoon53/ticketing-service-api/wiki/4.-API-%EB%AA%85%EC%84%B8%EC%84%9C)
+## API 명세서
+[API 명세서 - SwaggerHub 링크](https://app.swaggerhub.com/apis-docs/nakyoungoh/concert_reservation/1.0.0#/%EC%BD%98%EC%84%9C%ED%8A%B8%20API/getAvailableSeats)
+![img.png](/docs/APISpec_v1.png)
 
 
 ---
