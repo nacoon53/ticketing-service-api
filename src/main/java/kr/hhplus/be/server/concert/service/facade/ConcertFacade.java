@@ -5,8 +5,6 @@ import kr.hhplus.be.server.concert.domain.entity.Concert;
 import kr.hhplus.be.server.concert.domain.entity.ConcertReservation;
 import kr.hhplus.be.server.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.concert.domain.usecase.ConcertUsecase;
-import kr.hhplus.be.server.concert.service.ConcertReservationService;
-import kr.hhplus.be.server.concert.service.ConcertSeatService;
 import kr.hhplus.be.server.concert.service.ConcertService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -21,8 +19,6 @@ import static kr.hhplus.be.server.ServerApplication.RESERVATION_HOLD_MINUTES;
 public class ConcertFacade implements ConcertUsecase {
 
     private final ConcertService concertService;
-    private final ConcertSeatService concertSeatService;
-    private final ConcertReservationService concertReservationService;
     private final WaitListTokenService waitListTokenService;
 
     @Override
@@ -41,12 +37,12 @@ public class ConcertFacade implements ConcertUsecase {
         LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(RESERVATION_HOLD_MINUTES);
 
         //좌석 테이블의 상태값과 선점 만료 시간 업데이트
-        concertSeatService.chageStatusToTempAssigned(seatId, expiredAt);
+        concertService.chageStatusToTempAssigned(seatId, expiredAt);
 
         //토큰의 최종 갱신 시간 업데이트
         waitListTokenService.updateTokenTime(token);
 
         //예약 테이블에 row 추가
-        return concertReservationService.reserveSeatByUser(seatId, userId, expiredAt);
+        return concertService.reserveSeatByUser(seatId, userId, expiredAt);
     }
 }
