@@ -22,9 +22,4 @@ public class JpaConcertReservationRepositoryImpl implements ConcertReservationRe
     public Optional<ConcertReservation> findById(long reservationId) {
         return concertReservationJpaRepository.findById(reservationId);
     }
-
-    @Override
-    public void clear() {
-        concertReservationJpaRepository.deleteAll();
-    }
 }

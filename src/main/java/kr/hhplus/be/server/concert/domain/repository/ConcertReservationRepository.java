@@ -8,6 +8,4 @@ public interface ConcertReservationRepository {
     ConcertReservation save(ConcertReservation allocation);
 
     Optional<ConcertReservation> findById(long reservationId);
-
-    void clear();
 }

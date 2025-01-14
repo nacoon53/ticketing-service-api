@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.payment.service.facade;
 
-import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.auth.service.WaitListTokenService;
 import kr.hhplus.be.server.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.concert.service.ConcertService;
@@ -20,7 +19,6 @@ public class PaymentFacade implements PaymentUsecase {
     private final WaitListTokenService waitListTokenService;
 
     @Override
-    @Transactional
     public void payForConcert(String token, long reservationId, String userId) throws Exception {
         //예약이 유효한 지 확인
         if(!concertService.isValidReservation(reservationId)) {

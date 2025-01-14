@@ -15,7 +15,7 @@ import java.time.LocalDateTime;
 @Table
 public class ConcertSeat {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="seat_id")
     private long id;
 

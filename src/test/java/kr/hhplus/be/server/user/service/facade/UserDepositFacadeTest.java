@@ -2,7 +2,6 @@ package kr.hhplus.be.server.user.service.facade;
 
 import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -35,11 +34,6 @@ class UserDepositFacadeTest {
                 .build();
 
         userRepository.save(user);
-    }
-
-    @AfterEach
-    void tearDown() {
-        userRepository.clear();
     }
 
     @Test

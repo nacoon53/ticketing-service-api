@@ -10,9 +10,9 @@ import kr.hhplus.be.server.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.concert.domain.repository.ConcertRepository;
 import kr.hhplus.be.server.concert.domain.repository.ConcertReservationRepository;
 import kr.hhplus.be.server.concert.domain.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.test.base.BaseIntegretionTest;
 import kr.hhplus.be.server.user.domain.entity.User;
 import kr.hhplus.be.server.user.domain.repository.UserRepository;
-import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,7 +26,7 @@ import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class PaymentFacadeTest {
+class PaymentFacadeTest extends BaseIntegretionTest {
     @Autowired
     private PaymentFacade paymentFacade;
 
@@ -83,14 +83,14 @@ class PaymentFacadeTest {
 
     }
 
-    @AfterEach
+  /*  @AfterEach
     void tearDown() {
         concertRepository.clear();
         concertSeatRepository.clear();
         concertReservationRepository.clear();
         waitListTokenRepository.clear();
         userRepository.clear();
-    }
+    }*/
 
     @Test
     void 좌석_예약이_되어있지_않다면_에러를_리턴한다() throws Exception {

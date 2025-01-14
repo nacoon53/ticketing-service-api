@@ -18,7 +18,7 @@ import java.time.LocalDateTime;
 @Table
 public class ConcertReservation {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reservationId;
 
     private long concertId;

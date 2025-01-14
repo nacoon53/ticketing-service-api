@@ -29,9 +29,4 @@ public class JpaConcertSeatRepositoryImpl implements ConcertSeatRepository {
     public List<ConcertSeat> findByConcertIdAndStatus(long concertId, SeatStatus seatStatus) {
         return concertSeatJpaRepository.findByConcertIdAndStatus(concertId, seatStatus);
     }
-
-    @Override
-    public void clear() {
-        concertSeatJpaRepository.deleteAll();
-    }
 }

@@ -24,8 +24,4 @@ public class JpaConcertRepositoryImpl implements ConcertRepository {
         return concertJpaRepository.save(concert);
     }
 
-    @Override
-    public void clear() {
-        concertJpaRepository.deleteAll();
-    }
 }

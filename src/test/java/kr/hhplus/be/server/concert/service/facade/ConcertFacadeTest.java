@@ -9,7 +9,7 @@ import kr.hhplus.be.server.concert.domain.entity.ConcertReservation;
 import kr.hhplus.be.server.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.concert.domain.repository.ConcertRepository;
 import kr.hhplus.be.server.concert.domain.repository.ConcertSeatRepository;
-import org.junit.jupiter.api.AfterEach;
+import kr.hhplus.be.server.test.base.BaseIntegretionTest;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class ConcertFacadeTest {
+class ConcertFacadeTest extends BaseIntegretionTest {
     @Autowired
     private ConcertFacade concertFacade;
 
@@ -65,13 +65,6 @@ class ConcertFacadeTest {
                 .build();
 
         givenSeat = concertSeatRepository.save(seat);
-    }
-
-    @AfterEach
-    void tearDown() {
-        concertRepository.clear();
-        concertSeatRepository.clear();
-        waitListTokenRepository.clear();
     }
 
     @Test

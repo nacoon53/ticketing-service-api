@@ -3,7 +3,7 @@ package kr.hhplus.be.server.auth.service.facade;
 import kr.hhplus.be.server.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.auth.domain.repository.WaitListTokenRepository;
 import kr.hhplus.be.server.auth.dto.WaitListTokenValidationResponseDTO;
-import org.junit.jupiter.api.AfterEach;
+import kr.hhplus.be.server.test.base.BaseIntegretionTest;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -14,7 +14,7 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 @ActiveProfiles("test")
 @SpringBootTest
-class WaitListTokenFacadeTest {
+class WaitListTokenFacadeTest extends BaseIntegretionTest {
     @Autowired
     private WaitListTokenFacade waitListTokenFacade;
 
@@ -23,11 +23,6 @@ class WaitListTokenFacadeTest {
 
     String userId = "test";
     String token = "test:1";
-
-    @AfterEach
-    void tearDown() {
-        waitListTokenRepository.clear();
-    }
 
     @Test
     void 토큰_발급에_성공한다() throws Exception {

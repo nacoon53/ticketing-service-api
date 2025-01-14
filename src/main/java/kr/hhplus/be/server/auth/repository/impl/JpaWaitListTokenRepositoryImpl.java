@@ -38,9 +38,4 @@ public class JpaWaitListTokenRepositoryImpl implements WaitListTokenRepository {
     public List<WaitListToken> findByStatusOrderByLastIssuedAtAsc(TokenStatus tokenStatus) {
         return waitListTokenJpaRepository.findByStatusOrderByLastIssuedAtAsc(tokenStatus);
     }
-
-    @Override
-    public void clear() {
-        waitListTokenJpaRepository.deleteAll();
-    }
 }
