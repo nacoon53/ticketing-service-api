@@ -2,13 +2,12 @@ package kr.hhplus.be.server.module.concert.application.facade;
 
 import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
-import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import kr.hhplus.be.server.module.concert.domain.code.SeatStatus;
 import kr.hhplus.be.server.module.concert.domain.entity.Concert;
-import kr.hhplus.be.server.module.concert.domain.entity.ConcertReservation;
 import kr.hhplus.be.server.module.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.module.concert.domain.repository.ConcertRepository;
 import kr.hhplus.be.server.module.concert.domain.repository.ConcertSeatRepository;
+import kr.hhplus.be.server.module.concert.presentation.dto.ConcertReservationResponseDTO;
 import kr.hhplus.be.server.test.base.BaseIntegretionTest;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
@@ -73,11 +72,11 @@ class ConcertFacadeTest extends BaseIntegretionTest {
         long seatId = givenSeat.getId();
 
         //when
-        ConcertReservation reservation = concertFacade.reserveSeat(userId, seatId, token);
+        ConcertReservationResponseDTO reservation = concertFacade.reserveSeat(userId, seatId, token);
 
         //then
         Assertions.assertThat(reservation).isNotNull();
-        Assertions.assertThat(reservation.getStatus()).isEqualTo(ReservationStatus.RESERVED);
+        Assertions.assertThat(reservation.reservationId()).isEqualTo(1);
     }
 
 }
