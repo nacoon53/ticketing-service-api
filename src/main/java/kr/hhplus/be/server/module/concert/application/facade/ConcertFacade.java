@@ -46,13 +46,14 @@ public class ConcertFacade implements ConcertUsecase {
         LocalDateTime expiredAt = LocalDateTime.now().plusMinutes(5);
 
         //좌석 테이블의 상태값과 선점 만료 시간 업데이트
-        concertService.chageStatusToTempAssigned(seatId, expiredAt);
+        ConcertSeat seat = concertService.changeStatusToTempAssigned(seatId, expiredAt);
 
         //토큰의 최종 갱신 시간 업데이트
         waitListTokenService.updateTokenTime(token);
 
         //예약 테이블에 row 추가
-        ConcertReservation reservation = concertService.reserveSeatByUser(seatId, userId, expiredAt);
+        ConcertReservation reservation = concertService.reserveSeatByUser(seat.getConcertId(), seatId, userId, expiredAt);
+
         return ConcertReservationResponseDTO.fromEntity(reservation);
     }
 }

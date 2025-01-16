@@ -25,6 +25,11 @@ public class JpaConcertReservationRepositoryImpl implements ConcertReservationRe
     }
 
     @Override
+    public Optional<ConcertReservation> findByIdWithLock(long reservationId) {
+        return concertReservationJpaRepository.findByIdWithLock(reservationId);
+    }
+
+    @Override
     public Optional<ConcertReservation> findBySeatId(long seatId) {
         return concertReservationJpaRepository.findBySeatId(seatId);
     }

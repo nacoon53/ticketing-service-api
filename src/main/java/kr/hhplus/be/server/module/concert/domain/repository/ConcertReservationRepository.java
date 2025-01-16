@@ -9,6 +9,8 @@ public interface ConcertReservationRepository {
     ConcertReservation save(ConcertReservation allocation);
 
     Optional<ConcertReservation> findById(long reservationId);
+    Optional<ConcertReservation> findByIdWithLock(long reservationId);
     Optional<ConcertReservation> findBySeatId(long seatId);
     List<ConcertReservation> findByConcertId(long concertId);
+
 }

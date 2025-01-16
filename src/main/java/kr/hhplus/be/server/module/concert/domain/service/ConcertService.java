@@ -29,12 +29,20 @@ public class ConcertService {
         return concertRepository.findByShowDateAfter(LocalDateTime.now());
     }
 
+    @Transactional
     public List<ConcertSeat> getAvailableSeat(long concertId) {
         return concertSeatRepository.findByConcertIdAndStatus(concertId, SeatStatus.AVAILABLE);
-
     }
-    public ConcertReservation reserveSeatByUser(long seatId, String userId, LocalDateTime expiredAt) {
+
+    public ConcertReservation reserveSeatByUser(long concertId, long seatId, String userId, LocalDateTime expiredAt) {
+        Optional<ConcertReservation> reservationOptional = concertReservationRepository.findBySeatId(seatId);
+
+        if (reservationOptional.isPresent()) {
+            throw new ApiException(ErrorCode.ALREADY_OCCUPIED_SEAT);
+        }
+
         ConcertReservation reservation = ConcertReservation.builder()
+                .concertId(concertId)
                 .seatId(seatId)
                 .userId(userId)
                 .status(ReservationStatus.RESERVED)
@@ -57,9 +65,8 @@ public class ConcertService {
         return reservation.isValidReservation(LocalDateTime.now());
     }
 
-    @Transactional
-    public ConcertSeat chageStatusToTempAssigned(long seatId, LocalDateTime expiredAt) throws Exception{
-        ConcertSeat seat = concertSeatRepository.findById(seatId)
+    public ConcertSeat changeStatusToTempAssigned(long seatId, LocalDateTime expiredAt) throws Exception{
+        ConcertSeat seat = concertSeatRepository.findByIdWithLock(seatId)
                 .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND_SEAT));
 
         //좌석 유효성 검사
@@ -75,24 +82,17 @@ public class ConcertService {
 
     @Transactional
     public ConcertSeat changeStatusToPaid(long reservationId) throws Exception {
+        // 예약 상태 변경
+        ConcertReservation reservation = this.changeStatusToPaidForReservation(reservationId);
+        // 좌석 상태 변경
+        ConcertSeat seat = this.changeStatusToPaidForSeat(reservation.getSeatId());
 
-        try {
-            // 예약 상태 변경
-            ConcertReservation reservation = this.changeStatusToPaidForReservation(reservationId);
-            // 좌석 상태 변경
-            ConcertSeat seat = this.changeStatusToPaidForSeat(reservation.getSeatId());
-
-            return seat;
-
-        } catch (Exception e) {
-            throw new ApiException(ErrorCode.FAILED_CHANGE_STATUS_FOR_RESERVATION);
-        }
-
+        return seat;
     }
 
     public ConcertSeat changeStatusToPaidForSeat(long seatId) throws Exception {
         // 좌석을 선점 상태로 변경
-        ConcertSeat seat = concertSeatRepository.findById(seatId).get();
+        ConcertSeat seat = concertSeatRepository.findByIdWithLock(seatId).get();
         seat.changeStatusToPaid();
         return concertSeatRepository.save(seat);
 
@@ -100,7 +100,7 @@ public class ConcertService {
 
     public ConcertReservation changeStatusToPaidForReservation(long reservationId) throws Exception {
         // 예약 상태 변경
-        ConcertReservation reservation = concertReservationRepository.findById(reservationId).get();
+        ConcertReservation reservation = concertReservationRepository.findByIdWithLock(reservationId).get();
         reservation.changeStatusToPaid();
         return concertReservationRepository.save(reservation);
     }
