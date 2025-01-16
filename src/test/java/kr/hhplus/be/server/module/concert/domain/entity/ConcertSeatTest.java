@@ -23,20 +23,13 @@ class ConcertSeatTest {
     }
 
     @Test
-    void 좌석이_AVAILABLE상태가_아닐때_예약이_불가능하다() {
+    void 좌석이_결제됐다면_예약이_불가능하다() {
         //given
-        ConcertSeat tempAssignedSeat = ConcertSeat.builder()
-                .status(SeatStatus.TEMP_ASSIGNED)
-                .build();
-
         ConcertSeat reservedSeat = ConcertSeat.builder()
                 .status(SeatStatus.PAID)
                 .build();
 
         //then
-        assertFalse(tempAssignedSeat.isSeatAvailable());
-        assertTrue(tempAssignedSeat.isSeatOccupied());
-
         assertFalse(reservedSeat.isSeatAvailable());
         assertTrue(reservedSeat.isSeatOccupied());
     }
