@@ -124,7 +124,7 @@ class PaymentFacadeTest extends BaseIntegretionTest {
 
 
         //when
-        paymentFacade.payForConcert(token, reservationId, userId);
+        paymentFacade.payForConcert(userId, token, reservationId);
 
         //then
         ConcertReservation reservation = concertReservationRepository.findById(reservationId).get();
