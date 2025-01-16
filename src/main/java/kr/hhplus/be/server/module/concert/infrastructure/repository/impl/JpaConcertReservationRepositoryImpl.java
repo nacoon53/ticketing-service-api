@@ -6,6 +6,7 @@ import kr.hhplus.be.server.module.concert.infrastructure.repository.ConcertReser
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -21,5 +22,15 @@ public class JpaConcertReservationRepositoryImpl implements ConcertReservationRe
     @Override
     public Optional<ConcertReservation> findById(long reservationId) {
         return concertReservationJpaRepository.findById(reservationId);
+    }
+
+    @Override
+    public Optional<ConcertReservation> findBySeatId(long seatId) {
+        return concertReservationJpaRepository.findBySeatId(seatId);
+    }
+
+    @Override
+    public List<ConcertReservation> findByConcertId(long concertId) {
+        return concertReservationJpaRepository.findByConcertId(concertId);
     }
 }

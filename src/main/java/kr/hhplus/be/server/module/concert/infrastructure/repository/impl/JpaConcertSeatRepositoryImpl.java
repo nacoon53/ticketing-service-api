@@ -26,7 +26,7 @@ public class JpaConcertSeatRepositoryImpl implements ConcertSeatRepository {
     }
 
     @Override
-    public List<ConcertSeat> findByConcertIdAndStatus(long concertId, SeatStatus seatStatus) {
-        return concertSeatJpaRepository.findByConcertIdAndStatus(concertId, seatStatus);
+    public List<ConcertSeat> findByConcertIdAndStatusWithLock(long concertId, SeatStatus seatStatus) {
+        return concertSeatJpaRepository.findByConcertIdAndStatusWithLock(concertId, seatStatus);
     }
 }
