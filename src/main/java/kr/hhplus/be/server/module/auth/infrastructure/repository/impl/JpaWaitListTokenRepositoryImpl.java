@@ -36,6 +36,11 @@ public class JpaWaitListTokenRepositoryImpl implements WaitListTokenRepository {
     }
 
     @Override
+    public WaitListToken findByTokenWithLock(String token) {
+        return waitListTokenJpaRepository.findByTokenWithLock(token);
+    }
+
+    @Override
     public List<WaitListToken> findByStatusOrderByLastIssuedAtAsc(TokenStatus tokenStatus) {
         return waitListTokenJpaRepository.findByStatusOrderByLastIssuedAtAsc(tokenStatus);
     }

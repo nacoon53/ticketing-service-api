@@ -44,7 +44,7 @@ public class WaitListToken {
 
 
     public boolean isTokenActive() {
-        if(StringUtils.equals(this.status.toString(), TokenStatus.ACTIVE.name())) {
+        if(StringUtils.equals(this.status.name(), TokenStatus.ACTIVE.name())) {
             return true;
         }
         return false;
