@@ -5,6 +5,7 @@ import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
 import kr.hhplus.be.server.module.auth.infrastructure.repository.WaitListTokenJpaRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
@@ -37,5 +38,15 @@ public class JpaWaitListTokenRepositoryImpl implements WaitListTokenRepository {
     @Override
     public List<WaitListToken> findByStatusOrderByLastIssuedAtAsc(TokenStatus tokenStatus) {
         return waitListTokenJpaRepository.findByStatusOrderByLastIssuedAtAsc(tokenStatus);
+    }
+
+    @Override
+    public List<WaitListToken> findByStatusNotOrderByLastIssuedAtAsc(TokenStatus tokenStatus, Pageable pageable) {
+        return waitListTokenJpaRepository.findByStatusNotOrderByLastIssuedAtAsc(tokenStatus, pageable);
+    }
+
+    @Override
+    public WaitListToken findTopByUserIdAndStatusNotOrderByLastIssuedAtAsc(String userId, TokenStatus status) {
+        return waitListTokenJpaRepository.findTopByUserIdAndStatusNotOrderByLastIssuedAtAsc(userId, status);
     }
 }

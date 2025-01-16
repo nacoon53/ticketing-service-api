@@ -84,4 +84,30 @@ public class WaitListTokenService {
 
         return waitListTokenRepository.save(waitListToken);
     }
+
+    public void expireTokens() {
+        List<WaitListToken> activeTokens = waitListTokenRepository.findByStatusOrderByLastIssuedAtAsc(TokenStatus.ACTIVE);
+
+        for(WaitListToken activeToken : activeTokens) {
+            LocalDateTime targetTime = activeToken.getLastIssuedAt().plusMinutes(waitListTokenPolicy.getSessionMinutes());
+
+            if(targetTime.isAfter(LocalDateTime.now())) {
+                activeToken.setTokenStatusToExpired();
+                waitListTokenRepository.save(activeToken);
+            }
+        }
+    }
+
+    @Transactional
+    public void activeTokens() {
+        Pageable pageable = PageRequest.of(0, waitListTokenPolicy.getMaxCapacity());
+        List<WaitListToken> notExpiredTokens = waitListTokenRepository.findByStatusNotOrderByLastIssuedAtAsc(TokenStatus.EXPIRED, pageable);
+
+        for(WaitListToken token : notExpiredTokens) {
+            if(token.isTokenDeactivated()) {
+                token.setTokenStatusToActive();
+                waitListTokenRepository.save(token);
+            }
+        }
+    }
 }
