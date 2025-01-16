@@ -1,9 +1,9 @@
 package kr.hhplus.be.server.module.auth.application.facade;
 
-import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.application.usecase.WaitListTokenUsecase;
-import kr.hhplus.be.server.module.auth.presentation.dto.WaitListTokenValidationResponseDTO;
+import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.service.WaitListTokenService;
+import kr.hhplus.be.server.module.auth.presentation.dto.WaitListTokenValidationResponseDTO;
 import kr.hhplus.be.server.module.common.error.code.ErrorCode;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import lombok.RequiredArgsConstructor;
@@ -39,12 +39,13 @@ public class WaitListTokenFacade implements WaitListTokenUsecase {
                     .waitNumber(0)
                     .build();
         }
-int a =waitListTokenService.getWaitNumber(waitListToken);
+
+        int waitNumber =waitListTokenService.getWaitNumber(waitListToken);
 
         return WaitListTokenValidationResponseDTO.builder()
                 .isValid(true)
                 .canAccess(false)
-                .waitNumber(waitListTokenService.getWaitNumber(waitListToken))
+                .waitNumber(waitNumber)
                 .build();
     }
 }

@@ -1,24 +1,34 @@
 package kr.hhplus.be.server.module.auth.domain.service;
 
+import jakarta.transaction.Transactional;
 import kr.hhplus.be.server.module.auth.domain.code.TokenStatus;
 import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
+import kr.hhplus.be.server.module.auth.domain.policy.WaitListTokenPolicy;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
-import lombok.RequiredArgsConstructor;
 import kr.hhplus.be.server.module.common.error.code.ErrorCode;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.util.CollectionUtils;
 
+import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.IntStream;
 
-@RequiredArgsConstructor
 @Service
 @Slf4j
 public class WaitListTokenService {
-    private final WaitListTokenRepository waitListTokenRepository;
+    private WaitListTokenRepository waitListTokenRepository;
+    private WaitListTokenPolicy waitListTokenPolicy;
+
+    public WaitListTokenService(WaitListTokenRepository waitListTokenRepository, WaitListTokenPolicy waitListTokenPolicy) {
+        this.waitListTokenRepository = waitListTokenRepository;
+        this.waitListTokenPolicy = waitListTokenPolicy;
+    }
 
     public void updateTokenTime(String token) {
         WaitListToken witListToken = waitListTokenRepository.findByToken(token);
@@ -26,7 +36,6 @@ public class WaitListTokenService {
     }
 
     public WaitListToken generateWaitListToken(String userId) {
-       // String uuid = UUID.randomUUID().toString();
         List<WaitListToken> waitListTokens = waitListTokenRepository.findByStatusOrderByLastIssuedAtAsc(TokenStatus.WAIT);
 
         int waitNumber = 1;
@@ -34,7 +43,7 @@ public class WaitListTokenService {
             waitNumber = waitListTokens.size()+1;
         }
 
-        String token = String.format("%s:%s", userId, waitNumber); //대기열토큰 값은 유저의 UUID와 대기 순번의 조합
+        String token = String.format("%s:%s:%s", userId, UUID.randomUUID(), waitNumber); //대기열토큰 값은 유저의 UUID와 대기 순번의 조합
 
         WaitListToken waitListToken = WaitListToken.builder()
                 .userId(userId)
@@ -46,7 +55,7 @@ public class WaitListTokenService {
     }
 
     public boolean isExistWaitListTokenByUserId(String userId) {
-        WaitListToken token = waitListTokenRepository.findByUserId(userId);
+        WaitListToken token = waitListTokenRepository.findTopByUserIdAndStatusNotOrderByLastIssuedAtAsc(userId, TokenStatus.EXPIRED);
 
         if(token == null) {
             return false;
