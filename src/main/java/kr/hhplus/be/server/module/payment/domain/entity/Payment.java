@@ -3,9 +3,11 @@ package kr.hhplus.be.server.module.payment.domain.entity;
 import jakarta.persistence.*;
 import kr.hhplus.be.server.module.payment.domain.code.PaymentStatus;
 import lombok.Builder;
+import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
+@NoArgsConstructor
 @Entity
 @Table
 public class Payment {
