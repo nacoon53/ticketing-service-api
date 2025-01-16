@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.module.payment.application.facade;
 
 import kr.hhplus.be.server.module.auth.domain.service.WaitListTokenService;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.entity.ConcertSeat;
 import kr.hhplus.be.server.module.concert.domain.service.ConcertService;
 import kr.hhplus.be.server.module.payment.application.usecase.PaymentUsecase;
@@ -22,7 +24,7 @@ public class PaymentFacade implements PaymentUsecase {
     public void payForConcert(String token, long reservationId, String userId) throws Exception {
         //예약이 유효한 지 확인
         if(!concertService.isValidReservation(reservationId)) {
-            throw new Exception("좌석 예약을 먼저 해주세요.");
+            throw new ApiException(ErrorCode.REQUIRE_RESERVATION);
         }
 
         //예약 테이블과 좌석 테이블의 status 변경

@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.module.user.domain.entity;
 
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.junit.jupiter.MockitoExtension;
@@ -19,8 +20,8 @@ class UserTest {
 
         //when,then
         assertThatThrownBy(()->givenUser.increaseDeposit(100_000_000))
-                .isInstanceOf(Exception.class)
-                        .hasMessage("보유 금액이 최대 금액을 초과하였습니다");
+                .isInstanceOf(ApiException.class)
+                        .hasMessage("보유 금액이 최대 금액을 초과하였습니다.");
     }
 
     @Test
@@ -46,7 +47,8 @@ class UserTest {
 
         //when,then
         assertThatThrownBy(()->givenUser.decreaseDeposit(1))
-                .isInstanceOf(Exception.class)
+                .isInstanceOf(ApiException
+                        .class)
                 .hasMessage("보유 금액이 유효하지 않습니다.");
     }
 

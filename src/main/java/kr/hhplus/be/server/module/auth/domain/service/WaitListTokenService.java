@@ -4,6 +4,8 @@ import kr.hhplus.be.server.module.auth.domain.code.TokenStatus;
 import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
 import lombok.RequiredArgsConstructor;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Service;
@@ -57,7 +59,7 @@ public class WaitListTokenService {
         WaitListToken waitListToken = waitListTokenRepository.findByToken(token);
 
         if(waitListToken == null || StringUtils.equals(waitListToken.getStatus().toString(), TokenStatus.EXPIRED.name())) {
-            throw new Exception("토큰이 존재하지 않습니다. 새로 발급 받아 주세요.");
+            throw new ApiException(ErrorCode.NOT_FOUND_WAITLIST_TOKEN);
         }
 
         return waitListToken;

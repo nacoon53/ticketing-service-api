@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.module.concert.domain.service;
 
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import kr.hhplus.be.server.module.concert.domain.code.SeatStatus;
 import kr.hhplus.be.server.module.concert.domain.entity.ConcertReservation;
@@ -40,7 +41,7 @@ class ConcertServiceTest {
 
         //when, then
         Assertions.assertThatThrownBy(()->concertService.chageStatusToTempAssigned(seatId, LocalDateTime.now()))
-                .isInstanceOf(Exception.class)
+                .isInstanceOf(ApiException.class)
                 .hasMessage("이미 선점된 좌석입니다.");
 
         Mockito.verify(concertSeatRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());

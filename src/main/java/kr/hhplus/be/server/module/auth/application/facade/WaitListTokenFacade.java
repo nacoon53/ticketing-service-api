@@ -4,6 +4,8 @@ import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.application.usecase.WaitListTokenUsecase;
 import kr.hhplus.be.server.module.auth.presentation.dto.WaitListTokenValidationResponseDTO;
 import kr.hhplus.be.server.module.auth.domain.service.WaitListTokenService;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 
@@ -16,7 +18,7 @@ public class WaitListTokenFacade implements WaitListTokenUsecase {
     public WaitListToken issueToken(String userId) throws Exception {
         //토큰이 DB에 존재하는지 확인
         if (waitListTokenService.isExistWaitListTokenByUserId(userId)) {
-            throw new Exception("이미 발급받은 대기열 토큰이 존재합니다.");
+            throw new ApiException(ErrorCode.ALREADY_EXISTS_WAITLIST_TOKEN);
         }
 
         // 토큰 생성

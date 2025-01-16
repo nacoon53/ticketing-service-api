@@ -4,6 +4,8 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -22,13 +24,13 @@ public class User {
     @Getter
     private double deposit;
 
-    private final double MAX_DEPOSIT = 100_000_000;
+    private static final double MAX_DEPOSIT = 100_000_000;
 
     public double increaseDeposit(double amount) throws Exception {
         double result = this.deposit + amount;
 
         if(result >= MAX_DEPOSIT) {
-            throw new Exception("보유 금액이 최대 금액을 초과하였습니다");
+            throw new ApiException(ErrorCode.OVER_MAXIMUM_DEPOSIT);
         }
 
         this.deposit = result;
@@ -39,7 +41,7 @@ public class User {
         double result = this.deposit - amount;
 
         if(result < 0) {
-            throw new Exception("보유 금액이 유효하지 않습니다.");
+            throw new ApiException(ErrorCode.BAD_REQUEST_FOR_DEPOSIT);
         }
 
         this.deposit = result;

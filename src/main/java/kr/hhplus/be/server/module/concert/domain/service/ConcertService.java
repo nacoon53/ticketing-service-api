@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.module.concert.domain.service;
 
 import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import kr.hhplus.be.server.module.concert.domain.code.SeatStatus;
 import kr.hhplus.be.server.module.concert.domain.entity.Concert;
@@ -57,11 +59,12 @@ public class ConcertService {
 
     @Transactional
     public ConcertSeat chageStatusToTempAssigned(long seatId, LocalDateTime expiredAt) throws Exception{
-        ConcertSeat seat = concertSeatRepository.findById(seatId).get();
+        ConcertSeat seat = concertSeatRepository.findById(seatId)
+                .orElseThrow(() -> new ApiException(ErrorCode.NOT_FOUND_SEAT));
 
         //좌석 유효성 검사
         if(seat.isSeatOccupied()) { //다른 사람이 예약했거나 이미 결제한 경우
-            throw new Exception("이미 선점된 좌석입니다.");
+            throw new ApiException(ErrorCode.ALREADY_OCCUPIED_SEAT);
         }
 
         // 좌석을 임시 배정으로 변경 && 예약 만료 시간 업데이트
@@ -82,7 +85,7 @@ public class ConcertService {
             return seat;
 
         } catch (Exception e) {
-            throw new Exception("예약 및 좌석의 상태값이 제대로 변경되지 않았습니다.");
+            throw new ApiException(ErrorCode.FAILED_CHANGE_STATUS_FOR_RESERVATION);
         }
 
     }

@@ -2,6 +2,7 @@ package kr.hhplus.be.server.module.payment.application.facade;
 
 import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import kr.hhplus.be.server.module.concert.domain.code.SeatStatus;
 import kr.hhplus.be.server.module.concert.domain.entity.Concert;
@@ -93,13 +94,13 @@ class PaymentFacadeTest extends BaseIntegretionTest {
     }*/
 
     @Test
-    void 좌석_예약이_되어있지_않다면_에러를_리턴한다() throws Exception {
+    void 좌석_예약이_되어있지_않다면_에러를_리턴한다() {
         long reservationId = givenSeat.getId();
         String userId = "test";
 
         //when, then
-        assertThatThrownBy(()-> paymentFacade.payForConcert(token, reservationId, userId))
-                .isInstanceOf(Exception.class)
+        assertThatThrownBy(()-> paymentFacade.payForConcert(userId, token, reservationId))
+                .isInstanceOf(ApiException.class)
                 .hasMessage("좌석 예약을 먼저 해주세요.");
     }
 
