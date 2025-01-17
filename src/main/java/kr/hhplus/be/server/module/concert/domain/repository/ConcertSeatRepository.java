@@ -8,6 +8,7 @@ import java.util.Optional;
 
 public interface ConcertSeatRepository {
     Optional<ConcertSeat> findById(long seatId);
+    Optional<ConcertSeat> findByIdWithLock(long seatId);
     ConcertSeat save(ConcertSeat seat);
 
     List<ConcertSeat> findByConcertIdAndStatus(long concertId, SeatStatus seatStatus);

@@ -1,6 +1,8 @@
 package kr.hhplus.be.server.module.concert.domain.entity;
 
 import jakarta.persistence.*;
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
+import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -61,6 +63,9 @@ public class ConcertReservation {
     }
 
     public void changeStatusToPaid() {
+        if(this.status != ReservationStatus.RESERVED) {
+            throw new ApiException(ErrorCode.REQUIRE_RESERVATION);
+        }
         this.status = ReservationStatus.PAID;
     }
 }

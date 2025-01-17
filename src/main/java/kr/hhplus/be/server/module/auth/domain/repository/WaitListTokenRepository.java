@@ -13,6 +13,8 @@ public interface WaitListTokenRepository {
 
     WaitListToken findByToken(String token);
 
+    WaitListToken findByTokenWithLock(String token);
+
     List<WaitListToken> findByStatusOrderByLastIssuedAtAsc(TokenStatus tokenStatus);
 
     List<WaitListToken> findByStatusNotOrderByLastIssuedAtAsc(TokenStatus tokenStatus, Pageable pageable);

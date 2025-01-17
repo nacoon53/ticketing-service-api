@@ -64,8 +64,9 @@ public class WaitListTokenService {
         return true;
     }
 
+    @Transactional
     public WaitListToken getWaitListTokenByToken(String token) throws Exception {
-        WaitListToken waitListToken = waitListTokenRepository.findByToken(token);
+        WaitListToken waitListToken = waitListTokenRepository.findByTokenWithLock(token);
 
         if(waitListToken == null || StringUtils.equals(waitListToken.getStatus().toString(), TokenStatus.EXPIRED.name())) {
             throw new ApiException(ErrorCode.NOT_FOUND_WAITLIST_TOKEN);

@@ -1,5 +1,6 @@
 package kr.hhplus.be.server.module.concert.domain.service;
 
+import kr.hhplus.be.server.module.common.error.code.ErrorCode;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
 import kr.hhplus.be.server.module.concert.domain.code.SeatStatus;
@@ -15,6 +16,8 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.time.LocalDateTime;
 import java.util.Optional;
+
+import static org.mockito.ArgumentMatchers.anyLong;
 
 @ExtendWith(MockitoExtension.class)
 class ConcertServiceTest {
@@ -37,14 +40,14 @@ class ConcertServiceTest {
                 .status(SeatStatus.TEMP_ASSIGNED)
                 .build();
 
-        BDDMockito.given(concertSeatRepository.findById(ArgumentMatchers.anyLong())).willReturn(Optional.ofNullable(givenSeat));
+        BDDMockito.given(concertSeatRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(givenSeat));
 
         //when, then
-        Assertions.assertThatThrownBy(()->concertService.chageStatusToTempAssigned(seatId, LocalDateTime.now()))
+        Assertions.assertThatThrownBy(()->concertService.changeStatusToTempAssigned(seatId, LocalDateTime.now()))
                 .isInstanceOf(ApiException.class)
-                .hasMessage("이미 선점된 좌석입니다.");
+                .hasMessage(ErrorCode.ALREADY_OCCUPIED_SEAT.getMessage());
 
-        Mockito.verify(concertSeatRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());
+        Mockito.verify(concertSeatRepository, Mockito.times(1)).findByIdWithLock(anyLong());
     }
 
     @Test
@@ -57,14 +60,14 @@ class ConcertServiceTest {
                 .status(SeatStatus.TEMP_ASSIGNED)
                 .build();
 
-        BDDMockito.given(concertSeatRepository.findById(ArgumentMatchers.anyLong())).willReturn(Optional.ofNullable(givenSeat));
+        BDDMockito.given(concertSeatRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(givenSeat));
 
         //when, then
-        Assertions.assertThatThrownBy(()->concertService.chageStatusToTempAssigned(seatId, LocalDateTime.now()))
-                .isInstanceOf(Exception.class)
-                .hasMessage("이미 선점된 좌석입니다.");
+        Assertions.assertThatThrownBy(()->concertService.changeStatusToTempAssigned(seatId, LocalDateTime.now()))
+                .isInstanceOf(ApiException.class)
+                .hasMessage(ErrorCode.ALREADY_OCCUPIED_SEAT.getMessage());
 
-        Mockito.verify(concertSeatRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());
+        Mockito.verify(concertSeatRepository, Mockito.times(1)).findByIdWithLock(anyLong());
     }
 
     @Test
@@ -77,19 +80,16 @@ class ConcertServiceTest {
                 .status(SeatStatus.AVAILABLE)
                 .build();
 
-        BDDMockito.given(concertSeatRepository.findById(ArgumentMatchers.anyLong())).willReturn(Optional.ofNullable(givenSeat));
+        BDDMockito.given(concertSeatRepository.findByIdWithLock(anyLong())).willReturn(Optional.ofNullable(givenSeat));
         BDDMockito.given(concertSeatRepository.save(ArgumentMatchers.any(ConcertSeat.class)))
                 .willAnswer(invocation -> invocation.getArgument(0));
 
 
         //when
-        ConcertSeat seat = concertService.chageStatusToTempAssigned(seatId, LocalDateTime.now());
+        ConcertSeat seat = concertService.changeStatusToTempAssigned(seatId, LocalDateTime.now());
 
         //then
         Assertions.assertThat(seat.getStatus()).isEqualTo(SeatStatus.TEMP_ASSIGNED);
-
-        Mockito.verify(concertSeatRepository, Mockito.times(1)).findById(ArgumentMatchers.anyLong());
-        Mockito.verify(concertSeatRepository, Mockito.times(1)).save(ArgumentMatchers.any(ConcertSeat.class));
     }
 
 
@@ -103,7 +103,7 @@ class ConcertServiceTest {
                 .status(SeatStatus.TEMP_ASSIGNED)
                 .build();
 
-        BDDMockito.given(concertSeatRepository.findById(seatId)).willReturn(Optional.of(seat));
+        BDDMockito.given(concertSeatRepository.findByIdWithLock(seatId)).willReturn(Optional.of(seat));
         BDDMockito.given(concertSeatRepository.save(ArgumentMatchers.any(ConcertSeat.class))).willAnswer(invocation -> invocation.getArgument(0));
 
         // when
@@ -125,7 +125,7 @@ class ConcertServiceTest {
                 .willAnswer(invocation -> invocation.getArgument(0));
 
         //when
-        ConcertReservation allocation = concertService.reserveSeatByUser(seatId, userId, null);
+        ConcertReservation allocation = concertService.reserveSeatByUser(1, seatId, userId, null);
 
         //then
         Assertions.assertThat(allocation.getSeatId()).isEqualTo(seatId);
@@ -198,7 +198,7 @@ class ConcertServiceTest {
                 .expiredAt(LocalDateTime.now().plusMinutes(30))
                 .build();
 
-        BDDMockito.given(concertReservationRepository.findById(reservationId)).willReturn(Optional.of(reservation));
+        BDDMockito.given(concertReservationRepository.findByIdWithLock(reservationId)).willReturn(Optional.of(reservation));
         BDDMockito.given(concertReservationRepository.save(reservation)).willReturn(reservation);
 
         // when

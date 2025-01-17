@@ -48,11 +48,8 @@ public class ConcertSeat {
         }
 
         //임시 배정된 좌석의 경우 좌석 선점 시간이 만료 되지 않았다면
-        if(StringUtils.equals(this.status.toString(), SeatStatus.TEMP_ASSIGNED.name())
-                && isSeatReservationValidTime ()) {
-            return true;
-        }
-
+//        if(StringUtils.equals(this.status.toString(), SeatStatus.TEMP_ASSIGNED.name())
+//                && isSeatReservationValidTime ()) {
         return false;
     }
 
