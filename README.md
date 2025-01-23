@@ -11,6 +11,8 @@
 
 [ERD](https://github.com/nacoon53/ticketing-service-api/wiki/3.-ERD)
 
+[동시성 제어 방식 선택 과정](https://github.com/nacoon53/ticketing-service-api/wiki/5.-%EB%8F%99%EC%8B%9C%EC%84%B1-%EC%A0%9C%EC%96%B4-%EB%B0%A9%EC%8B%9D%EC%97%90-%EB%8C%80%ED%95%9C-%EA%B3%A0%EC%B0%B0)
+
 ## API 명세서
 [API 명세서 - SwaggerHub 링크](https://app.swaggerhub.com/apis-docs/nakyoungoh/concert_reservation/1.0.0#/%EC%BD%98%EC%84%9C%ED%8A%B8%20API/getAvailableSeats)
 ![img.png](/docs/APISpec_v1.png)
