@@ -11,7 +11,7 @@ import java.util.List;
 import java.util.Optional;
 
 public interface ConcertReservationJpaRepository extends JpaRepository<ConcertReservation, Long> {
-    @Lock(LockModeType.PESSIMISTIC_WRITE)
+    @Lock(LockModeType.OPTIMISTIC)
     @Query("SELECT cr FROM ConcertReservation cr WHERE cr.reservationId = :reservationId")
     Optional<ConcertReservation> findByIdWithLock(@Param("reservationId")long reservationId);
     Optional<ConcertReservation> findBySeatId(long seatId);
