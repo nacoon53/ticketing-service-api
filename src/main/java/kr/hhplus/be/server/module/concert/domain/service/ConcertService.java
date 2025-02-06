@@ -1,6 +1,7 @@
 package kr.hhplus.be.server.module.concert.domain.service;
 
 import jakarta.transaction.Transactional;
+import kr.hhplus.be.server.module.common.aspect.annotation.CacheableRedis;
 import kr.hhplus.be.server.module.common.error.code.ErrorCode;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
 import kr.hhplus.be.server.module.concert.domain.code.ReservationStatus;
@@ -25,6 +26,7 @@ public class ConcertService {
     private final ConcertSeatRepository concertSeatRepository;
     private final ConcertReservationRepository concertReservationRepository;
 
+    @CacheableRedis
     public List<Concert> getConcertList() {
         return concertRepository.findByShowDateAfter(LocalDateTime.now());
     }
