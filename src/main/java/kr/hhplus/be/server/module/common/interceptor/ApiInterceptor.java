@@ -3,7 +3,6 @@ package kr.hhplus.be.server.module.common.interceptor;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import kr.hhplus.be.server.module.auth.application.usecase.WaitListTokenUsecase;
-import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.presentation.dto.WaitListTokenValidationResponseDTO;
 import kr.hhplus.be.server.module.common.error.code.ErrorCode;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
@@ -29,13 +28,14 @@ public class ApiInterceptor implements HandlerInterceptor {
             throw new ApiException(ErrorCode.NOT_FOUND_USER);
         }
 
+        //토큰이 없다면 토큰 발급
         if(StringUtils.isEmpty(token)) {
-            WaitListToken issuedToken = waitListTokenUsecase.issueToken(userId);
-            token = issuedToken.getToken();
+            token = waitListTokenUsecase.issueToken(userId);
             response.setHeader("WAITLIST_TOKEN", token);
         }
 
-        WaitListTokenValidationResponseDTO waitListToken = waitListTokenUsecase.checkTokenAndGetWaitNumber(token);
+        //토큰의 대기열 순서 조회(+토큰 유효성 검사)
+        WaitListTokenValidationResponseDTO waitListToken = waitListTokenUsecase.checkTokenAndGetWaitNumber(userId, token);
         if(waitListToken.isCanAccess()) {
             request.setAttribute("token", token);
             return true;
