@@ -1,6 +1,5 @@
 package kr.hhplus.be.server.module.auth.application.facade;
 
-import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
 import kr.hhplus.be.server.module.auth.presentation.dto.WaitListTokenValidationResponseDTO;
 import kr.hhplus.be.server.module.common.error.exception.ApiException;
@@ -30,20 +29,20 @@ class WaitListTokenFacadeTest extends BaseIntegretionTest {
     @Test
     void 토큰_발급에_성공한다() throws Exception {
         //when
-        WaitListToken waitListToken = waitListTokenFacade.issueToken(userId);
+        String waitListToken = waitListTokenFacade.issueToken(userId);
 
         //then
         assertThat(waitListToken).isNotNull();
-        assertThat(waitListToken.getToken()).matches(String.format("%s:[a-f0-9-]+:%d", userId, 1));
+        assertThat(waitListToken).matches(String.format("%s:[a-f0-9-]+", userId, 1));
     }
 
     @Test
     void 대기열_순번을_성공적으로_가져온다() throws Exception {
         //given
-        WaitListToken waitListToken = waitListTokenFacade.issueToken(userId);
+        String waitListToken = waitListTokenFacade.issueToken(userId);
 
         //when
-        WaitListTokenValidationResponseDTO dto = waitListTokenFacade.checkTokenAndGetWaitNumber(waitListToken.getToken());
+        WaitListTokenValidationResponseDTO dto = waitListTokenFacade.checkTokenAndGetWaitNumber(userId, waitListToken);
 
         //then
         assertThat(dto).isNotNull();
@@ -59,7 +58,7 @@ class WaitListTokenFacadeTest extends BaseIntegretionTest {
         String token = "nobody:1";
 
         //when, then
-        assertThatThrownBy(()-> waitListTokenFacade.checkTokenAndGetWaitNumber(token))
+        assertThatThrownBy(()-> waitListTokenFacade.checkTokenAndGetWaitNumber(userId, token))
                 .isInstanceOf(ApiException.class)
                 .hasMessage("토큰이 존재하지 않습니다. 새로 발급 받아 주세요.");
     }

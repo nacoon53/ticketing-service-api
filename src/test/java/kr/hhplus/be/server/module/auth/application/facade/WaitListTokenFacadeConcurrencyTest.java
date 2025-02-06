@@ -7,18 +7,20 @@ import kr.hhplus.be.server.module.auth.domain.entity.WaitListToken;
 import kr.hhplus.be.server.module.auth.domain.policy.WaitListTokenPolicy;
 import kr.hhplus.be.server.module.auth.domain.repository.WaitListTokenRepository;
 import kr.hhplus.be.server.module.auth.domain.service.WaitListTokenService;
+import kr.hhplus.be.server.module.auth.infrastructure.redis.WaitListTokenRedisManager;
 import kr.hhplus.be.server.module.user.domain.entity.User;
 import kr.hhplus.be.server.module.user.domain.repository.UserRepository;
 import kr.hhplus.be.server.test.base.BaseIntegretionTest;
+import org.apache.commons.lang3.StringUtils;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.ActiveProfiles;
 
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -35,11 +37,13 @@ class WaitListTokenFacadeConcurrencyTest extends BaseIntegretionTest {
     private WaitListTokenRepository waitListTokenRepository;
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private WaitListTokenRedisManager waitListTokenRedisManager;
     @Mock
     private WaitListTokenPolicy waitListTokenPolicy;
-    @InjectMocks
+    @Autowired
     private WaitListTokenService waitListTokenService;
-    @InjectMocks
+    @Autowired
     private WaitListTokenScheduler waitListTokenScheduler;
 
     User givenUser;
@@ -75,12 +79,15 @@ class WaitListTokenFacadeConcurrencyTest extends BaseIntegretionTest {
         ExecutorService executorService = Executors.newFixedThreadPool(threadCount);
         CountDownLatch latch = new CountDownLatch(threadCount);
 
+        Map<String, String> tokenList = new HashMap<>();
+
         //when
         for (int i = 0; i < threadCount; i++) {
             String userId = "user" + i;
             executorService.execute(() -> {
                 try {
-                    waitListTokenUsecase.issueToken(userId);
+                    String token = waitListTokenUsecase.issueToken(userId);
+                    tokenList.put(userId, token);
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 } finally {
@@ -92,14 +99,21 @@ class WaitListTokenFacadeConcurrencyTest extends BaseIntegretionTest {
         latch.await();  // 모든 스레드가 완료될 때까지 대기
         executorService.shutdown();
 
-        Thread.sleep(5000);
+        Thread.sleep(10000);
 
         //then
+        int activeCount = 0;
+        for(int i=0; i<threadCount; i++) {
+            String userId = "user" + i;
+            String status = waitListTokenService.getWaitListTokenStatus(userId, token);
+
+            if(StringUtils.equals(TokenStatus.ACTIVE.name(), status)) {
+                activeCount++;
+            }
+        }
 
         //토큰 값 확인
-        List<WaitListToken> tokens = waitListTokenRepository.findByStatusOrderByLastIssuedAtAsc(TokenStatus.ACTIVE);
-        assertThat(tokens).isNotNull();
-        assertThat(tokens.size()).isEqualTo(capacity);
+        assertThat(activeCount).isEqualTo(capacity);
     }
 
 }
