@@ -19,6 +19,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 public class ConcertReservation {
+    @Version
+    private int version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long reservationId;

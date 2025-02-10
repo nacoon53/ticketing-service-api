@@ -14,6 +14,9 @@ import java.time.LocalDateTime;
 @Entity
 @Table
 public class ConcertSeat {
+    @Version
+    private int version;
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="seat_id")

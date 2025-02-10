@@ -101,7 +101,7 @@ public class WaitListTokenService {
         for(WaitListToken activeToken : activeTokens) {
             LocalDateTime targetTime = activeToken.getLastIssuedAt().plusMinutes(waitListTokenPolicy.getSessionMinutes());
 
-            if(targetTime.isAfter(LocalDateTime.now())) {
+            if(targetTime.isBefore(LocalDateTime.now())) {
                 activeToken.setTokenStatusToExpired();
                 waitListTokenRepository.save(activeToken);
             }
