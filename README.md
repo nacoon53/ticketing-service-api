@@ -18,6 +18,8 @@
 
 [Redis 활용 방안](https://github.com/nacoon53/ticketing-service-api/wiki/6.-%EC%BD%98%EC%84%9C%ED%8A%B8-%EC%98%88%EC%95%BD-%EC%8B%9C%EC%8A%A4%ED%85%9C%EC%9D%98-Redis-%ED%99%9C%EC%9A%A9-%EB%B0%A9%EC%95%88)
 
+[쿼리 수행 속도 개선(Feat. Index)](https://github.com/nacoon53/ticketing-service-api/wiki/7.-%EC%BF%BC%EB%A6%AC-%EC%88%98%ED%96%89-%EC%86%8D%EB%8F%84-%EA%B0%9C%EC%84%A0(Feat.-Index))
+
 ## API 명세서
 [API 명세서 - SwaggerHub 링크](https://app.swaggerhub.com/apis-docs/nakyoungoh/concert_reservation/1.0.0#/%EC%BD%98%EC%84%9C%ED%8A%B8%20API/getAvailableSeats)
 ![img.png](/docs/APISpec_v1.png)
