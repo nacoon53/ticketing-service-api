@@ -3,6 +3,7 @@ package kr.hhplus.be.server.module.concert.presentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.hhplus.be.server.module.common.util.BulkInsertUtil;
 import kr.hhplus.be.server.module.concert.application.usecase.ConcertUsecase;
 import kr.hhplus.be.server.module.concert.presentation.dto.AvailableSeatResponseDTO;
 import kr.hhplus.be.server.module.concert.presentation.dto.BookingRequestDTO;
@@ -21,6 +22,7 @@ import java.util.List;
 @RequestMapping("/api/v1/concerts")
 public class ConcertController {
     private final ConcertUsecase concertUsecase;
+    private final BulkInsertUtil bulkInsertUtil;
 
     // 콘서트 목록(공연 날짜 포함) 조회
     @Operation(description = "콘서트 목록을 조회합니다.")
@@ -54,5 +56,12 @@ public class ConcertController {
 
         ConcertReservationResponseDTO responseDTO = concertUsecase.reserveSeat(userId, dto.seatId(), token);
         return ResponseEntity.status(HttpStatus.OK).body(responseDTO);
+    }
+
+    @Operation(description = "콘서트 데이블에 대량의 데이터를 INSERT 합니다")
+    @GetMapping("/generate")
+    public String generateConcerts(@RequestParam("count") int count) {
+        bulkInsertUtil.insertDummyConcerts(count); // 1,000개씩 배치 저장
+        return count + "개의 콘서트 데이터가 삽입되었습니다!";
     }
 }

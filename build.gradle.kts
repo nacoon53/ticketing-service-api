@@ -55,6 +55,10 @@ dependencies {
 
 	// redis
 	implementation("org.springframework.boot:spring-boot-starter-data-redis")
+
+	//instancio (fake 객체 생성)
+	implementation("org.instancio:instancio-core:3.4.0")
+	testImplementation("org.instancio:instancio-junit:3.4.0")
 }
 
 tasks.withType<Test> {

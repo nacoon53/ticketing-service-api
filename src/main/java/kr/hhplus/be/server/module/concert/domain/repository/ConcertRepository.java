@@ -8,4 +8,5 @@ import java.util.List;
 public interface ConcertRepository {
     List<Concert> findByShowDateAfter(LocalDateTime targetDateTime);
     Concert save(Concert concert);
+    List<Concert> saveAll(List<Concert> list);
 }

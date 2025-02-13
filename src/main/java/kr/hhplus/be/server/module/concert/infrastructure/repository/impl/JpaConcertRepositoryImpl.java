@@ -24,4 +24,9 @@ public class JpaConcertRepositoryImpl implements ConcertRepository {
         return concertJpaRepository.save(concert);
     }
 
+    @Override
+    public List<Concert> saveAll(List<Concert> list) {
+        return concertJpaRepository.saveAll(list);
+    }
+
 }
