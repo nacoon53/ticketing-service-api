@@ -1,24 +1,39 @@
 version: '3'
 services:
   mysql:
+    container_name: mysql1
     image: mysql:8.0
     ports:
-      - "3306:3306"
+      - "33306:3306"
     environment:
       - MYSQL_ROOT_PASSWORD=root
       - MYSQL_USER=application
       - MYSQL_PASSWORD=application
       - MYSQL_DATABASE=hhplus
     volumes:
-      - ./data/mysql/:/var/lib/mysql
+      - ./data/mysql:/var/lib/mysql
+
+  mysql2:
+    container_name: mysql2
+    image: mysql:8.0
+    ports:
+      - "33307:3306"  # 내부 포트는 그대로 두고 외부 포트만 변경
+    environment:
+      - MYSQL_ROOT_PASSWORD=root
+      - MYSQL_USER=application
+      - MYSQL_PASSWORD=application
+      - MYSQL_DATABASE=hhplus
+    volumes:
+      - ./data/mysql2:/var/lib/mysql  # 각 인스턴스별 데이터 디렉토리 분리
 
   redis:
+    container_name: redis
     image: redis:6.2.6-alpine
     ports:
       - "6379:6379"
     command: redis-server /usr/local/etc/redis/redis.conf
     volumes:
-      - ./data/redis/:/var/lib/redis
+      - ./data/redis:/var/lib/redis
       - ./data/redis/redis.conf:/usr/local/etc/redis/redis.conf
     restart: always
 
