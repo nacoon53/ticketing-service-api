@@ -3,6 +3,7 @@ package kr.hhplus.be.server.config;
 import jakarta.annotation.PreDestroy;
 import org.springframework.context.annotation.Configuration;
 import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.containers.KafkaContainer;
 import org.testcontainers.containers.MySQLContainer;
 import org.testcontainers.containers.wait.strategy.Wait;
 import org.testcontainers.utility.DockerImageName;
@@ -12,6 +13,7 @@ class TestcontainersConfiguration {
 
 	public static final MySQLContainer<?> MYSQL_CONTAINER;
 	public static final GenericContainer<?> REDIS_CONTAINER;
+	public static final KafkaContainer KAFKA_CONTAINER;
 
 	static {
 		// MYSQL 컨테이너 설정
@@ -33,6 +35,12 @@ class TestcontainersConfiguration {
 
 		System.setProperty("spring.redis.host", REDIS_CONTAINER.getHost());
 		System.setProperty("spring.redis.port", REDIS_CONTAINER.getMappedPort(6379).toString());
+
+		// Kafka 컨테이너 설정
+		KAFKA_CONTAINER = new KafkaContainer(DockerImageName.parse("confluentinc/cp-kafka:latest"));
+		KAFKA_CONTAINER.start();
+
+		System.setProperty("spring.kafka.bootstrap-servers", KAFKA_CONTAINER.getBootstrapServers());
 	}
 
 	@PreDestroy
@@ -43,6 +51,10 @@ class TestcontainersConfiguration {
 
 		if (REDIS_CONTAINER.isRunning()) {
 			REDIS_CONTAINER.stop();
+		}
+
+		if (KAFKA_CONTAINER.isRunning()) {
+			KAFKA_CONTAINER.stop();
 		}
 	}
 }
