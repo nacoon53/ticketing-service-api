@@ -43,6 +43,7 @@ dependencies {
 	testImplementation("org.springframework.boot:spring-boot-testcontainers")
 	testImplementation("org.testcontainers:junit-jupiter")
 	testImplementation("org.testcontainers:mysql")
+	testImplementation("org.testcontainers:kafka:1.17.6")
 	testRuntimeOnly("org.junit.platform:junit-platform-launcher")
 
 	//lombok
@@ -59,6 +60,9 @@ dependencies {
 	//instancio (fake 객체 생성)
 	implementation("org.instancio:instancio-core:3.4.0")
 	testImplementation("org.instancio:instancio-junit:3.4.0")
+
+	//kafka
+	implementation("org.springframework.kafka:spring-kafka")
 }
 
 tasks.withType<Test> {
