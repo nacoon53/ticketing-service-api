@@ -11,6 +11,7 @@ import kr.hhplus.be.server.module.concert.presentation.dto.AvailableSeatResponse
 import kr.hhplus.be.server.module.concert.presentation.dto.ConcertReservationResponseDTO;
 import kr.hhplus.be.server.module.concert.presentation.dto.ConcertResponseDTO;
 import kr.hhplus.be.server.module.externalApi.dataplatform.service.SendToDataPlatformService;
+import kr.hhplus.be.server.module.outbox.domain.service.OutboxService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -24,6 +25,7 @@ public class ConcertFacade implements ConcertUsecase {
     private final ConcertService concertService;
     private final WaitListTokenService waitListTokenService;
     private final SendToDataPlatformService sendToDataPlatformService;
+    private final OutboxService outboxService;
 
     @Override
     public List<ConcertResponseDTO> getConcertList() {
@@ -56,8 +58,9 @@ public class ConcertFacade implements ConcertUsecase {
         //예약 테이블에 row 추가
         ConcertReservation reservation = concertService.reserveSeatByUser(seat.getConcertId(), seatId, userId, expiredAt);
 
-        //좌석 예약 정보 데이터 플랫폼에 전달
-        sendToDataPlatformService.publishReservationEvent(userId, seatId); //seatId에 콘서트와 좌석 정보 모두 포함되어 있음
+        //좌석 예약 정보 데이터 플랫폼에 전달 -> 이벤트 전달을 위해 outbox 테이블에 이벤트 저장(kafka 이용)으로 코드 수정
+        //sendToDataPlatformService.publishReservationEvent(userId, seatId); //seatId에 콘서트와 좌석 정보 모두 포함되어 있음
+        outboxService.createOutboxForReservationFinish(reservation.getReservationId());
 
         return ConcertReservationResponseDTO.fromEntity(reservation);
     }
