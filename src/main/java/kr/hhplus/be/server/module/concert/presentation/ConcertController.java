@@ -3,6 +3,7 @@ package kr.hhplus.be.server.module.concert.presentation;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.servlet.http.HttpServletRequest;
+import kr.hhplus.be.server.kafka.KafkaProducer;
 import kr.hhplus.be.server.module.common.util.BulkInsertUtil;
 import kr.hhplus.be.server.module.concert.application.usecase.ConcertUsecase;
 import kr.hhplus.be.server.module.concert.presentation.dto.AvailableSeatResponseDTO;
@@ -23,11 +24,14 @@ import java.util.List;
 public class ConcertController {
     private final ConcertUsecase concertUsecase;
     private final BulkInsertUtil bulkInsertUtil;
+    private final KafkaProducer kafkaProducer;
 
     // 콘서트 목록(공연 날짜 포함) 조회
     @Operation(description = "콘서트 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<ConcertResponseDTO>> getConcertList() {
+        kafkaProducer.sendMessage("test-topic", "hello, nakyoung");
+
         List<ConcertResponseDTO> list = concertUsecase.getConcertList();
 
         return ResponseEntity.ok(list);
