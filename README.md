@@ -22,6 +22,9 @@
 
 [트랜잭션 분리 설계(Feat. MSA 설계)](https://www.notion.so/8-Feat-MSA-1996db2e3ea180c1a02ce52888f2761f?showMoveTo=true&saveParent=true)
 
+## 서비스 운영
+[부하 테스트 보고서](https://www.notion.so/9-1a76db2e3ea1801aa7daf235e9be3672#1a76db2e3ea180a9a2b1d02cd025083e)
+
 ## API 명세서
 [API 명세서 - SwaggerHub 링크](https://app.swaggerhub.com/apis-docs/nakyoungoh/concert_reservation/1.0.0#/%EC%BD%98%EC%84%9C%ED%8A%B8%20API/getAvailableSeats)
 ![img.png](/docs/APISpec_v1.png)
