@@ -25,6 +25,8 @@
 ## 서비스 운영
 [부하 테스트 보고서](https://www.notion.so/9-1a76db2e3ea1801aa7daf235e9be3672#1a76db2e3ea180a9a2b1d02cd025083e)
 
+[장애 대응 문서](https://github.com/nacoon53/ticketing-service-api/wiki/10.-%EC%9E%A5%EC%95%A0-%EB%8C%80%EC%9D%91-%EB%AC%B8%EC%84%9C)
+
 ## API 명세서
 [API 명세서 - SwaggerHub 링크](https://app.swaggerhub.com/apis-docs/nakyoungoh/concert_reservation/1.0.0#/%EC%BD%98%EC%84%9C%ED%8A%B8%20API/getAvailableSeats)
 ![img.png](/docs/APISpec_v1.png)
