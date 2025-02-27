@@ -30,8 +30,6 @@ public class ConcertController {
     @Operation(description = "콘서트 목록을 조회합니다.")
     @GetMapping
     public ResponseEntity<List<ConcertResponseDTO>> getConcertList() {
-        kafkaProducer.sendMessage("test-topic", "hello, nakyoung");
-
         List<ConcertResponseDTO> list = concertUsecase.getConcertList();
 
         return ResponseEntity.ok(list);
