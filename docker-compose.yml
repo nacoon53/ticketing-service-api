@@ -93,6 +93,17 @@ services:
       - KAFKA_CLUSTERS_0_BOOTSTRAPSERVERS=kafka-1:29092,kafka-2:29093,kafka-3:29094
       - KAFKA_CLUSTERS_0_ZOOKEEPER=zookeeper:32181
 
+  grafana:
+    container_name: grafana
+    image: philhawthorne/docker-influxdb-grafana
+    ports:
+      - "3003:3003"
+      - "3004:8083"
+      - "8086:8086"
+    volumes:
+      - /path/for/influxdb:/var/lib/influxdb
+      - /path/for/grafana:/var/lib/grafana3
+
 networks:
   default:
     driver: bridge

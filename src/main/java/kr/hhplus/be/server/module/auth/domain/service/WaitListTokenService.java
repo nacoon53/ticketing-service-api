@@ -178,13 +178,15 @@ public class WaitListTokenService {
 
 
         for(Object obj : waitTokensByRedis) {
-            String token =  obj.toString().toString();
+            String token =  obj.toString();
             waitListTokenRedisManager.activateToken(token);
 
             //db에 저장된 토큰 상태값 변경
             WaitListToken waitListToken = waitListTokenRepository.findByToken(token);
-            waitListToken.setTokenStatusToActive();
-            waitListTokenRepository.save(waitListToken);
+            if(ObjectUtils.isNotEmpty(waitListToken)) { //2025-02-28 NPE 방지
+                waitListToken.setTokenStatusToActive();
+                waitListTokenRepository.save(waitListToken);
+            }
 
         }
     }
