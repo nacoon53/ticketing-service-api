@@ -20,10 +20,11 @@
 
 [쿼리 수행 속도 개선(Feat. Index)](https://github.com/nacoon53/ticketing-service-api/wiki/7.-%EC%BF%BC%EB%A6%AC-%EC%88%98%ED%96%89-%EC%86%8D%EB%8F%84-%EA%B0%9C%EC%84%A0(Feat.-Index))
 
-[트랜잭션 분리 설계(Feat. MSA 설계)](https://www.notion.so/8-Feat-MSA-1996db2e3ea180c1a02ce52888f2761f?showMoveTo=true&saveParent=true)
+[트랜잭션 분리 설계(Feat. MSA 설계)](https://github.com/nacoon53/ticketing-service-api/wiki/08.-%ED%8A%B8%EB%9E%9C%EC%9E%AD%EC%85%98-%EB%B6%84%EB%A6%AC-%EC%84%A4%EA%B3%84(Feat.-MSA-%EC%84%A4%EA%B3%84))
 
 ## 서비스 운영
-[부하 테스트 보고서](https://www.notion.so/9-1a76db2e3ea1801aa7daf235e9be3672#1a76db2e3ea180a9a2b1d02cd025083e)
+[부하 테스트 보고서](https://github.com/nacoon53/ticketing-service-api/wiki/09.-%EB%B6%80%ED%95%98-%ED%85%8C%EC%8A%A4%ED%8A%B8-%EB%B3%B4%EA%B3%A0%EC%84%9C)
+
 
 [장애 대응 문서](https://github.com/nacoon53/ticketing-service-api/wiki/10.-%EC%9E%A5%EC%95%A0-%EB%8C%80%EC%9D%91-%EB%AC%B8%EC%84%9C)
 
